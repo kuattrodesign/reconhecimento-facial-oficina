@@ -103,14 +103,28 @@ async function loadStudents() {
   labels.map(async label => {
 
    const descriptions = [];
+   const exts = ["jpg", "jpeg", "png"];
 
    for (let i = 1; i <= 1; i++) {
-
+/*
     const img =
       await faceapi.fetchImage(
        `/students/${label}/${i}.jpg`
       );
+*/
+      let img;
 
+      for (const ext of exts) {
+        try {
+          img = await faceapi.fetchImage(
+            `/students/${label}/${i}.${ext}`
+          );
+          break;
+        } catch (e) {}
+      }
+
+      if (!img) continue;
+      
     const detection =
       await faceapi
         .detectSingleFace(img)
